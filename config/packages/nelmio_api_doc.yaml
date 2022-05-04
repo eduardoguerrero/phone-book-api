@@ -1,0 +1,23 @@
+nelmio_api_doc:
+  documentation:
+    servers:
+      - url: http://127.0.0.1:8004
+        description: API over HTTP
+      - url: http://127.0.0.1:8004
+        description: API over HTTPS
+    info:
+      title: Contacts
+      description: Phone Book API
+      version: 1.0.0
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    security:
+      - Bearer: [ ]
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/api/contacts(?!/doc$) # Accepts routes under /api except /api/doc
+
