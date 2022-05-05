@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends AbstractController
 {
     /**
+     * Get http body data
+     *
      * @param Request $request
      * @return mixed
      * @throws InvalidHttpBodyData

@@ -18,6 +18,8 @@ final class ContactRepository extends AbstractServiceEntityRepository implements
     protected string $entityClass = Contact::class;
 
     /**
+     * Get contact taking into account firstname and lastname
+     *
      * @param string $firstname
      * @param string $lastname
      * @return array
@@ -29,8 +31,7 @@ final class ContactRepository extends AbstractServiceEntityRepository implements
             ->where('c.firstname = :firstname')
             ->andWhere('c.lastname = :lastname')
             ->setParameter('firstname', $firstname)
-            ->setParameter('lastname', $lastname)
-            ->orderBy('c.createdAt');
+            ->setParameter('lastname', $lastname);
 
         return $qb->getQuery()->getArrayResult();
     }

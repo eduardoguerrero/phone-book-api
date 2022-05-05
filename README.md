@@ -63,5 +63,5 @@ Get all contacts with curl or Postman
 ❯ curl --location --request GET 'http://127.0.0.1:8000/api/contacts'
 ```
 
-![Alt text](img/response.png?raw=true "Api response")
+![Alt text](img/responseApi.png?raw=true "Api response")
 

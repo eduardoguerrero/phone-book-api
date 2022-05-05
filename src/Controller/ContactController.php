@@ -82,9 +82,6 @@ final class ContactController extends ApiController
      *
      * @OA\Tag(name="contact")
      * @Security(name="Bearer")
-     *
-     * @param int $contactId
-     * @return JsonResponse
      */
     public function delete(int $contactId): JsonResponse
     {
@@ -92,9 +89,49 @@ final class ContactController extends ApiController
         if (!$contact) {
             return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
         }
-        $this->contactService->remove($contact);
+        try {
+            $this->contactService->remove($contact);
+        } catch (\Exception $e) {
+            return $this->json(['Contact error' => $e->getMessage()]);
+        }
 
         return $this->json(['Contact deleted']);
+    }
+
+    /**
+     * Search for contact by name
+     *
+     * This call search for contact by name.
+     *
+     * @Route("/by-name/{firstname}/{lastname}", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the contact by name",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
+     *     )
+     * )
+     * @OA\Response(
+     *     response=404,
+     *     description="Returns the message 'Contact not found'",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
+     *     )
+     * )
+     *
+     * @OA\Tag(name="contact")
+     * @Security(name="Bearer")
+     */
+    public function getByName(string $firstname, string $lastname): JsonResponse
+    {
+        $contact = $this->contactService->getByName($firstname, $lastname);
+        if (!$contact) {
+            return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json($contact);
     }
 
     /**
@@ -122,10 +159,6 @@ final class ContactController extends ApiController
      *
      * @OA\Tag(name="contact")
      * @Security(name="Bearer")
-     *
-     * @param int $ownerCustomerId
-     * @param int $customerId
-     * @return JsonResponse
      */
     public function add(int $ownerCustomerId, int $customerId)
     {
@@ -169,11 +202,6 @@ final class ContactController extends ApiController
      *
      * @OA\Tag(name="contact")
      * @Security(name="Bearer")
-     *
-     * @param int $contactId
-     * @param Request $request
-     * @return JsonResponse
-     * @throws \App\Exception\InvalidHttpBodyData
      */
     public function edit(int $contactId, Request $request, ValidatorInterface $validator)
     {
@@ -190,46 +218,4 @@ final class ContactController extends ApiController
 
         return $this->json(['contact updated' => $response->getId()]);
     }
-
-    /**
-     * Search for contact by name
-     *
-     * This call search for contact by name.
-     *
-     * @Route("/by-name/{firstname}/{lastname}", methods={"GET"})
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns the contact by name",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Response(
-     *     response=404,
-     *     description="Returns the message 'Contact not found'",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
-     * )
-     *
-     * @OA\Tag(name="contact")
-     * @Security(name="Bearer")
-     *
-     * @param string $firstname
-     * @param string $lastname
-     * @return JsonResponse
-     */
-    public function getByName(string $firstname, string $lastname): JsonResponse
-    {
-        $contact = $this->contactService->getByName($firstname, $lastname);
-        if (!$contact) {
-            return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
-        }
-
-        return $this->json($contact);
-    }
-
-
 }

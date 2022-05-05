@@ -35,7 +35,7 @@ class ContactService
     }
 
     /**
-     * Find contact by ID
+     * Find contact by Id
      *
      * @param int $id
      * @return Contact|null
@@ -46,7 +46,7 @@ class ContactService
     }
 
     /**
-     * Delete contact by ID
+     * Delete contact
      *
      * @param Contact $contact
      * @return void
@@ -58,7 +58,7 @@ class ContactService
     }
 
     /**
-     * Get contact by firstname and lastname
+     * Get contact taking into account firstname and lastname
      *
      * @param string $firstname
      * @param string $lastname
@@ -75,6 +75,7 @@ class ContactService
      * @param Contact $contact
      * @param array $content
      * @return Contact
+     * @throws \Exception
      */
     public function edit(Contact $contact, array $content): Contact
     {

@@ -50,6 +50,12 @@ class Contact
     #[ORM\JoinColumn(name: "fk_customer_id", referencedColumnName: "id", nullable: true)]
     private $fkCustomerId;
 
+    public function __construct()
+    {
+        $this->updatedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
+    }
+
     /**
      * @return int
      */

@@ -25,6 +25,8 @@ class CustomerService
     }
 
     /**
+     * Find contact by Id
+     *
      * @param int $id
      * @return Customer|null
      */
@@ -34,6 +36,8 @@ class CustomerService
     }
 
     /**
+     * Add other customers as contact
+     *
      * @param Customer $customer
      * @return Contact
      */
@@ -48,9 +52,7 @@ class CustomerService
             ->setBirthday($customer->getBirthday())
             ->setEmailAddress($customer->getEmailAddress())
             ->setPicture($customer->getPicture())
-            ->setFkCustomerId($customer)
-            ->setUpdatedAt(new \DateTime())
-            ->setCreatedAt(new \DateTime());
+            ->setFkCustomerId($customer);
         $this->customerRepository->persistEntity($contact);
         $this->customerRepository->flushEntity();
 

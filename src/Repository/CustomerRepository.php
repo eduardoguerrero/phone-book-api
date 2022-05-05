@@ -18,6 +18,8 @@ final class CustomerRepository extends AbstractServiceEntityRepository implement
     protected string $entityClass = Customer::class;
 
     /**
+     * Get all customers
+     *
      * @return array
      */
     public function getAll(): array
