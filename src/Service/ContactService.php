@@ -82,6 +82,9 @@ class ContactService
         if (!filter_var($content['email_address'], FILTER_VALIDATE_EMAIL)) {
             throw new \InvalidArgumentException('Invalid email');
         }
+        if (!$this->filterValidateDate($content['birthday'])) {
+            throw new \InvalidArgumentException('Invalid date');
+        }
         $contact
             ->setFirstname($content['firstname'])
             ->setLastname($content['lastname'])
@@ -94,5 +97,14 @@ class ContactService
         $this->contactRepository->flushEntity();
 
         return $contact;
+    }
+
+    /**
+     * @param string $date
+     * @return false|int
+     */
+    public function filterValidateDate(string $date)
+    {
+        return (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date));
     }
 }

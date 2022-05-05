@@ -73,7 +73,7 @@ final class ContactController extends ApiController
      * )
      * @OA\Response(
      *     response=404,
-     *     description="Returns the message 'Contact not found'",
+     *     description="Returns the message 'Contact not found' or 'Contact error'",
      *     @OA\JsonContent(
      *        type="array",
      *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
@@ -150,7 +150,7 @@ final class ContactController extends ApiController
      * )
      * @OA\Response(
      *     response=404,
-     *     description="Returns the message 'Contact not found'",
+     *     description="Returns the message 'Contact not found' or 'Contact error'",
      *     @OA\JsonContent(
      *        type="array",
      *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
@@ -166,16 +166,15 @@ final class ContactController extends ApiController
         if (!$contact) {
             return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
         }
-        $content = $this->getHttpBodyData($request);
         try {
+            $content = $this->getHttpBodyData($request);
             $response = $this->contactService->edit($contact, $content);
         } catch (\Exception $e) {
-            return $this->json(['contact updated' => $e->getMessage()]);
+            return $this->json(['Contact error' => $e->getMessage()]);
         }
 
         return $this->json(['contact updated' => $response->getId()]);
     }
-
 
     /**
      * Add other customers as contact

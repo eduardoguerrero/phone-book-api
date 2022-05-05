@@ -12,7 +12,7 @@ use App\Entity\Contact;
  * @method Contact[]    findAll()
  * @method Contact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-final class ContactRepository extends AbstractServiceEntityRepository implements ContactInterface
+class ContactRepository extends AbstractServiceEntityRepository implements ContactInterface
 {
     // Set entity class to ServiceEntityRepository parent
     protected string $entityClass = Contact::class;
