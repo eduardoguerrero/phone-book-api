@@ -74,3 +74,8 @@ Then you can enter the php container and typing following into your local shell
 ```
 
 ![Alt text](img/tests.png?raw=true "Api response")
+
+
+# @TODO
+
+Add JWT authentication
