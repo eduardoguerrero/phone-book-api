@@ -193,10 +193,8 @@ final class ContactController extends ApiController
      * Add other customers as contact
      *
      * This call allows you to add other customers as contact, you can associate a existing customer as a contact with
-     * other customer.
-     *
-     * ownerCustomerId: It will be the owner of the new contact
-     * customerId: It will be the new contact
+     * other customer.     *
+     * ownerCustomerId: It will be the owner of the new contact and customerId: It will be the new contact
      *
      * @Route("/customer/{ownerCustomerId}/contact/{customerId}", methods={"POST"})
      * @OA\Response(
