@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
-#[ORM\Table(name: '`contact`')]
+#[ORM\Table(name: '`customer`')]
 #[ApiResource]
-class Contact
+class Customer
 {
     use TimestampableTrait;
 
@@ -31,7 +31,7 @@ class Contact
     #[Assert\NotBlank]
     private $addressInformation;
 
-    #[ORM\Column(name: 'phone_number', type: 'string', length: 20, nullable: false)]
+    #[ORM\Column(name: 'phone_number', type: 'string', length: 255, nullable: false)]
     #[Assert\NotBlank]
     private $phoneNumber;
 
@@ -46,9 +46,20 @@ class Contact
     #[ORM\Column(name: 'picture', type: 'string', length: 255, nullable: true)]
     private $picture;
 
-    #[ORM\ManyToOne(targetEntity: "App\Entity\Customer")]
-    #[ORM\JoinColumn(name: "fk_customer_id", referencedColumnName: "id", nullable: true)]
-    private $fkCustomerId;
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    private $lastlogin;
+
+    #[ORM\Column(name: 'gender', type: 'string', length: 1, nullable: false)]
+    #[Assert\NotBlank]
+    private $gender;
+
+    #[ORM\Column(name: 'subscribed_to_newsletter', type: 'integer', length: 1, nullable: false)]
+    #[Assert\NotBlank]
+    private $subscribedToNewsletter;
+
+    #[ORM\Column(name: 'is_active', type: 'integer', length: 1, nullable: false)]
+    #[Assert\NotBlank]
+    private $isActive;
 
     /**
      * @return int
@@ -192,20 +203,77 @@ class Contact
     }
 
     /**
-     * @return Customer
+     * @return \DateTime
      */
-    public function getFkCustomerId(): Customer
+    public function getLastlogin(): \DateTime
     {
-        return $this->fkCustomerId;
+        return $this->lastlogin;
     }
 
     /**
-     * @param Customer $fkCustomerId
+     * @param \DateTime $lastlogin
      * @return $this
      */
-    public function setFkCustomerId(Customer $fkCustomerId): self
+    public function setLastlogin(\DateTime $lastlogin): self
     {
-        $this->fkCustomerId = $fkCustomerId;
+        $this->lastlogin = $lastlogin;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     * @return $this
+     */
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubscribedToNewsletter(): int
+    {
+        return $this->subscribedToNewsletter;
+    }
+
+    /**
+     * @param int $subscribedToNewsletter
+     * @return $this
+     */
+    public function setSubscribedToNewsletter(int $subscribedToNewsletter): self
+    {
+        $this->subscribedToNewsletter = $subscribedToNewsletter;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIsActive(): int
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param int $isActive
+     * @return $this
+     */
+    public function setIsActive(int $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
@@ -217,5 +285,4 @@ class Contact
     {
         return $this->firstname . ' ' . $this->lastname;
     }
-
 }

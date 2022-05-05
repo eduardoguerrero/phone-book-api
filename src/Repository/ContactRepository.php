@@ -34,4 +34,5 @@ final class ContactRepository extends AbstractServiceEntityRepository implements
 
         return $qb->getQuery()->getArrayResult();
     }
+
 }

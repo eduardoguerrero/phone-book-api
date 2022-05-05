@@ -13,12 +13,6 @@ use App\Repository\ContactRepository;
  */
 class ContactService
 {
-    public const API_MESSAGES = [
-        'not_found' => ['Contact not found'],
-        'deleted' => ['Contact deleted'],
-    ];
-
-
     /** @var ContactRepository */
     protected ContactRepository $contactRepository;
 
@@ -31,6 +25,8 @@ class ContactService
     }
 
     /**
+     * Get all contacts
+     *
      * @return Contact[]
      */
     public function getAll(): array
@@ -39,6 +35,8 @@ class ContactService
     }
 
     /**
+     * Find contact by ID
+     *
      * @param int $id
      * @return Contact|null
      */
@@ -48,6 +46,8 @@ class ContactService
     }
 
     /**
+     * Delete contact by ID
+     *
      * @param Contact $contact
      * @return void
      */
@@ -58,6 +58,8 @@ class ContactService
     }
 
     /**
+     * Get contact by firstname and lastname
+     *
      * @param string $firstname
      * @param string $lastname
      * @return array
@@ -65,5 +67,31 @@ class ContactService
     public function getByName(string $firstname, string $lastname): array
     {
         return $this->contactRepository->getByName($firstname, $lastname);
+    }
+
+    /**
+     * Edit a contact
+     *
+     * @param Contact $contact
+     * @param array $content
+     * @return Contact
+     */
+    public function edit(Contact $contact, array $content): Contact
+    {
+        if (!filter_var($content['email_address'], FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException('Invalid email');
+        }
+        $contact
+            ->setFirstname($content['firstname'])
+            ->setLastname($content['lastname'])
+            ->setAddressInformation($content['address_information'])
+            ->setPhoneNumber($content['phone_number'])
+            ->setBirthday(new \DateTime($content['birthday']))
+            ->setEmailAddress($content['email_address'])
+            ->setPicture($content['picture']);
+        $this->contactRepository->persistEntity($contact);
+        $this->contactRepository->flushEntity();
+
+        return $contact;
     }
 }

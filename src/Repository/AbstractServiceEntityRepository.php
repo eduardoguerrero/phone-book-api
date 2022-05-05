@@ -61,5 +61,4 @@ abstract class AbstractServiceEntityRepository extends ServiceEntityRepository
     {
         $this->_em->remove($object);
     }
-
 }

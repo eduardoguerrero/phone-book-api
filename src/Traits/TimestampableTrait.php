@@ -55,5 +55,4 @@ trait TimestampableTrait
     {
         return $this->updatedAt;
     }
-
 }
