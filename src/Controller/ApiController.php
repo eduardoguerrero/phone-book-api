@@ -25,7 +25,7 @@ class ApiController extends AbstractController
     {
         $content = json_decode($request->getContent(), true);
         if (empty($content)) {
-            throw  new InvalidHttpBodyData('Invalid request body');
+            throw new InvalidHttpBodyData('Invalid request body');
         }
 
         return $content;

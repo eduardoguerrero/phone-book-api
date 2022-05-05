@@ -35,7 +35,7 @@ Then you can enter the php container
 ❯ cd /path/your/project/phone-book-api 
 ❯ symfony server:start
 ```
-Change web server listening in line 4 and line 6 in file`config/packages/nelmio_api_doc.yaml` 
+If you need it, change web server listening in line 4 and line 6 in file`config/packages/nelmio_api_doc.yaml` 
 
 You have successfully set up your coding dev environment. You can now access the api documentation in your browser.
 ```bash

@@ -30,8 +30,7 @@
         "symfony/serializer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*",
-      "ext-http": "*"
+        "symfony/yaml": "6.0.*"
     },
     "config": {
         "allow-plugins": {
@@ -85,6 +84,7 @@
         }
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.4"
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpunit/phpunit": "^9"
     }
 }
