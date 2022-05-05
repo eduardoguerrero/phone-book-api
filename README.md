@@ -65,3 +65,12 @@ Get all contacts with curl or Postman
 
 ![Alt text](img/responseApi.png?raw=true "Api response")
 
+
+# Run tests
+
+Then you can enter the php container and typing following into your local shell
+```bash
+./vendor/phpunit/phpunit/phpunit
+```
+
+![Alt text](img/tests.png?raw=true "Api response")

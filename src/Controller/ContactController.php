@@ -233,6 +233,6 @@ final class ContactController extends ApiController
             return $this->json(['Contact error' => $e->getMessage()]);
         }
 
-        return $this->json(['Contact created' => $contact->getId(), Response::HTTP_CREATED]);
+        return $this->json(['Contact created' => $contact->getId()], Response::HTTP_CREATED);
     }
 }
