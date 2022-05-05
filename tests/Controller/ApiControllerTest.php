@@ -54,4 +54,22 @@ class ApiControllerTest extends TestCase
         $this->expectException(InvalidHttpBodyData::class);
         $this->apiController->getHttpBodyData(new Request());
     }
+
+    /**
+     * @return void
+     * @throws InvalidHttpBodyData
+     */
+    public function testGetHttpBodyData(): void
+    {
+        $request = new Request([], [], [], [], [], [], json_encode([
+            'firstname' => 'Joe',
+            'lastname' => 'Doe'
+        ]));
+        $result = $this->apiController->getHttpBodyData($request);
+        $this->assertArrayHasKey('firstname', $result);
+        $this->assertArrayHasKey('lastname', $result);
+        $this->assertEquals('Joe', $result['firstname']);
+        $this->assertEquals('Doe', $result['lastname']);
+    }
+
 }

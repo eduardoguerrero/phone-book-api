@@ -135,6 +135,49 @@ final class ContactController extends ApiController
     }
 
     /**
+     * Edit created contacts.
+     *
+     * This call allows you to edit created contacts.
+     *
+     * @Route("/{contactId}", methods={"PATCH"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the message 'Contact edited'",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
+     *     )
+     * )
+     * @OA\Response(
+     *     response=404,
+     *     description="Returns the message 'Contact not found'",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
+     *     )
+     * )
+     *
+     * @OA\Tag(name="contact")
+     * @Security(name="Bearer")
+     */
+    public function edit(int $contactId, Request $request, ValidatorInterface $validator)
+    {
+        $contact = $this->contactService->findById($contactId);
+        if (!$contact) {
+            return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
+        }
+        $content = $this->getHttpBodyData($request);
+        try {
+            $response = $this->contactService->edit($contact, $content);
+        } catch (\Exception $e) {
+            return $this->json(['contact updated' => $e->getMessage()]);
+        }
+
+        return $this->json(['contact updated' => $response->getId()]);
+    }
+
+
+    /**
      * Add other customers as contact
      *
      * This call allows you to add other customers as contact
@@ -175,47 +218,5 @@ final class ContactController extends ApiController
         $contact = $this->customerService->setCustomerAsContact($customer);
 
         return $this->json(['id' => $contact->getId()], Response::HTTP_CREATED);
-    }
-
-    /**
-     * Edit created contacts.
-     *
-     * This call allows you to edit created contacts.
-     *
-     * @Route("/{contactId}", methods={"PATCH"})
-     * @OA\Response(
-     *     response=200,
-     *     description="Returns the message 'Contact edited'",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
-     * )
-     * @OA\Response(
-     *     response=404,
-     *     description="Returns the message 'Contact not found'",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
-     * )
-     *
-     * @OA\Tag(name="contact")
-     * @Security(name="Bearer")
-     */
-    public function edit(int $contactId, Request $request, ValidatorInterface $validator)
-    {
-        $contact = $this->contactService->findById($contactId);
-        if (!$contact) {
-            return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
-        }
-        $content = $this->getHttpBodyData($request);
-        try {
-            $response = $this->contactService->edit($contact, $content);
-        } catch (\Exception $e) {
-            return $this->json(['contact updated' => $e->getMessage()]);
-        }
-
-        return $this->json(['contact updated' => $response->getId()]);
     }
 }
