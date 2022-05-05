@@ -50,7 +50,7 @@ http://127.0.0.1:8000/api/doc
 ❯ mysql -uroot -proot
 ```
 
-Or using phpAdmin
+Or using phpmyadmin
 ```bash
 http://localhost:8080/ (username: root password: root)
 ```
