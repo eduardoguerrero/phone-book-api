@@ -92,7 +92,7 @@ class ContactService
             ->setPhoneNumber($content['phone_number'])
             ->setBirthday(new \DateTime($content['birthday']))
             ->setEmailAddress($content['email_address'])
-            ->setPicture($content['picture']);
+            ->setPicture($this->getImage($content['picture']));
         $this->contactRepository->persistEntity($contact);
         $this->contactRepository->flushEntity();
 
@@ -106,5 +106,24 @@ class ContactService
     public function filterValidateDate(string $date)
     {
         return (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date));
+    }
+
+    /**
+     * @param string $picture
+     * @return string|null
+     */
+    public function getImage(string $picture)
+    {
+        // Decode base64 image
+        $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $picture));
+        // Generate unique name
+        $imageName = uniqid() . '.png';
+        // Save image in public/images folder
+        $contentImage = file_put_contents('images/' . $imageName, $data);
+        if ($contentImage) {
+            return $imageName;
+        }
+
+        return null;
     }
 }

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Service\ContactService;
 use App\Service\CustomerService;
+use Doctrine\DBAL\Driver\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -137,7 +138,19 @@ final class ContactController extends ApiController
     /**
      * Edit created contacts.
      *
-     * This call allows you to edit created contacts.
+     * This call allows you to edit created contacts, request example:
+     *
+     *    {
+     *       "firstname": "Rene",
+     *       "lastname": "lastname",
+     *       "address_information": "Santa Clara SV",
+     *       "phone_number": "244-24461",
+     *       "birthday": "1986-03-29",
+     *       "email_address": "escobarguerrero@gmail.com",
+     *       "picture": "data:image/png;base64,AAAFBfj42Pj4"
+     *    }
+     *
+     *
      *
      * @Route("/{contactId}", methods={"PATCH"})
      * @OA\Response(
@@ -173,18 +186,22 @@ final class ContactController extends ApiController
             return $this->json(['Contact error' => $e->getMessage()]);
         }
 
-        return $this->json(['contact updated' => $response->getId()]);
+        return $this->json(['Contact updated' => $response->getId()]);
     }
 
     /**
      * Add other customers as contact
      *
-     * This call allows you to add other customers as contact
+     * This call allows you to add other customers as contact, you can associate a existing customer as a contact with
+     * other customer.
+     *
+     * ownerCustomerId: It will be the owner of the new contact
+     * customerId: It will be the new contact
      *
      * @Route("/customer/{ownerCustomerId}/contact/{customerId}", methods={"POST"})
      * @OA\Response(
      *     response=200,
-     *     description="Returns the message 'Contact edited'",
+     *     description="Returns the message 'Contact created'",
      *     @OA\JsonContent(
      *        type="array",
      *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
@@ -192,7 +209,7 @@ final class ContactController extends ApiController
      * )
      * @OA\Response(
      *     response=404,
-     *     description="Returns the message 'Contact not found'",
+     *     description="Returns the message 'Contact not found' or 'Contact error'",
      *     @OA\JsonContent(
      *        type="array",
      *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
@@ -206,16 +223,19 @@ final class ContactController extends ApiController
     {
         // Avoid save same customer as a contact
         if ($ownerCustomerId === $customerId) {
-            return $this->json(['The contact must be different to the customer'], Response::HTTP_NOT_FOUND);
+            return $this->json(['The new contact must be different to the customer that makes the action'], Response::HTTP_NOT_FOUND);
         }
         // Seek to the customer that will be a contact
         $customer = $this->customerService->findById($customerId);
         if (!$customer) {
             return $this->json(['Contact not found'], Response::HTTP_NOT_FOUND);
         }
-        // Add other customer as contact
-        $contact = $this->customerService->setCustomerAsContact($customer);
+        try {
+            $contact = $this->customerService->setCustomerAsContact($customer);
+        } catch (Exception $e) {
+            return $this->json(['Contact error' => $e->getMessage()]);
+        }
 
-        return $this->json(['id' => $contact->getId()], Response::HTTP_CREATED);
+        return $this->json(['Contact created' => $contact->getId(), Response::HTTP_CREATED]);
     }
 }
