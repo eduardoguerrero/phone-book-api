@@ -45,10 +45,39 @@ final class ContactController extends ApiController
      * @OA\Response(
      *     response=200,
      *     description="Returns contact list",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
+     *     content={
+     *         @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *              example={
+     *                    "id": 23,
+     *                    "firstname": "firstname_0",
+     *                    "lastname": "lastname_0",
+     *                     "addressInformation": "address_0",
+     *                     "phoneNumber": "+503739532770",
+     *                     "birthday": "2022-05-18T00:00:00-05:00",
+     *                     "emailAddress": "email_0@gmail.com",
+     *                     "picture": "picture_0.jpg",
+     *                     "fkCustomerId": {
+     *                              "id": 21,
+     *                               "firstname": "firstname_0",
+     *                               "lastname": "lastname_0",
+     *                               "addressInformation": "address_0",
+     *                               "phoneNumber": "+503739532770",
+     *                               "birthday": "2022-05-18T00:00:00-05:00",
+     *                               "emailAddress": "email_0@gmail.com",
+     *                               "picture": "picture_0.jpg",
+     *                               "lastlogin": "2022-05-18T03:10:38-05:00",
+     *                               "gender": "F",
+     *                               "subscribedToNewsletter": 1,
+     *                               "isActive": 1,
+     *                               "createdAt": "2022-05-18T03:10:38-05:00",
+     *                               "updatedAt": "2022-05-18T03:10:38-05:00"
+     *                     }
+     *                }
+     *            )
+     *        )
+     *     },
      * )
      * @OA\Tag(name="contact")
      * @Security(name="Bearer")
