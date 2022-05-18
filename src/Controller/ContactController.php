@@ -53,7 +53,7 @@ final class ContactController extends ApiController
      * @OA\Tag(name="contact")
      * @Security(name="Bearer")
      */
-    public function getAll()
+    public function getAll(): JsonResponse
     {
         return $this->json($this->contactService->getAll());
     }
@@ -61,24 +61,32 @@ final class ContactController extends ApiController
     /**
      * Delete existing contact.
      *
-     * This call removes a contact, use a contact ID in order to identify the row to delete.
+     * This call removes a contact from the database, use a contact ID in order to identify the row to delete.
      *
      * @Route("/{contactId}", methods={"DELETE"})
      * @OA\Response(
      *     response=200,
-     *     description="Returns the message 'Contact deleted'",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
+     *     description="Returns the message 'Contact deleted'.",
+     *     content={
+     *         @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *              example={"Contact deleted"}
+     *            )
+     *        )
+     *     },
      * )
      * @OA\Response(
      *     response=404,
-     *     description="Returns the message 'Contact not found' or 'Contact error'",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=Contact::class, groups={"full"}))
-     *     )
+     *     description="Returns the message 'Contact not found' or 'Contact error'.",
+     *     content={
+     *         @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *              example={"Contact not found"},
+     *            )
+     *        )
+     *     },
      * )
      *
      * @OA\Tag(name="contact")

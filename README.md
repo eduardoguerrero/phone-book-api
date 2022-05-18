@@ -43,17 +43,20 @@ http://127.0.0.1:8000/api/doc
 ```
 ![Alt text](img/api.png?raw=true "Api doc")
 
-- You can access the database by typing following into your local shell
+- You can access the database by typing following into your local shell or using phpmyadmin
 
 ```bash
 ❯ docker exec -it lillydoo_mariadb bash -l
 ❯ mysql -uroot -proot
 ```
 
-Or using phpmyadmin
-```bash
-http://localhost:8080/ (username: root password: root)
+# To browse your documentation with Swagger UI
+
 ```
+http://127.0.0.1:8000/api/doc.json
+```
+
+
 
 #  Execute a request
 
